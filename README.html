@@ -1,0 +1,908 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>パーソナルAIアシスタント調査</title>
+<style>
+:root {
+	--navy1: #12224d;
+	--navy2: #2f5fbf;
+	--ink: #1c2330;
+	--ink-soft: #4a5568;
+	--line: #d9dfe8;
+	--code-bg: #f4f6fa;
+	--link: #1a4fa0;
+	--accent: var(--navy1);
+	--accent2: var(--navy2);
+	--soft: #f2f5fb;
+}
+.ch01 { --accent: hsl(280, 78%, 25%); --accent2: hsl(280, 58%, 55%); --soft: hsl(280, 28%, 95%); }
+.ch02 { --accent: hsl(252, 78%, 25%); --accent2: hsl(252, 58%, 55%); --soft: hsl(252, 28%, 95%); }
+.ch03 { --accent: hsl(224, 78%, 25%); --accent2: hsl(224, 58%, 55%); --soft: hsl(224, 28%, 95%); }
+.ch04 { --accent: hsl(196, 78%, 25%); --accent2: hsl(196, 58%, 55%); --soft: hsl(196, 28%, 95%); }
+.ch05 { --accent: hsl(168, 78%, 25%); --accent2: hsl(168, 58%, 55%); --soft: hsl(168, 28%, 95%); }
+.ch06 { --accent: hsl(140, 78%, 25%); --accent2: hsl(140, 58%, 55%); --soft: hsl(140, 28%, 95%); }
+.ch07 { --accent: hsl(112, 78%, 25%); --accent2: hsl(112, 58%, 55%); --soft: hsl(112, 28%, 95%); }
+.ch08 { --accent: hsl(84, 78%, 25%); --accent2: hsl(84, 58%, 55%); --soft: hsl(84, 28%, 95%); }
+.ch09 { --accent: hsl(56, 78%, 25%); --accent2: hsl(56, 58%, 55%); --soft: hsl(56, 28%, 95%); }
+.ch10 { --accent: hsl(28, 78%, 25%); --accent2: hsl(28, 58%, 55%); --soft: hsl(28, 28%, 95%); }
+.ch11 { --accent: hsl(0, 78%, 25%); --accent2: hsl(0, 58%, 55%); --soft: hsl(0, 28%, 95%); }
+body {
+	margin: 0;
+	background: #ffffff;
+	color: var(--ink, #1c2330);
+	font-family: "Segoe UI", "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 15.5px;
+	line-height: 1.85;
+}
+.titlebar {
+	background: linear-gradient(135deg, var(--navy1, #12224d), var(--navy2, #2f5fbf));
+	color: #fff;
+	padding: 34px 30px 30px;
+}
+.titlebar .inner { max-width: 1600px; margin: 0 auto; }
+.titlebar h1 { font-size: 2em; margin: 0 0 6px; color: #fff; }
+.titlebar .lead { margin: 0; color: #dfe7f7; background: transparent; }
+.titlebar .date { margin: 6px 0 0; font-size: 0.9em; color: #c9d6f0; background: transparent; }
+.wrap { max-width: 1600px; margin: 0 auto; padding: 0 30px; }
+a { color: var(--link, #1a4fa0); background: transparent; }
+a.home {
+	display: inline-block;
+	margin-top: 18px;
+	padding: 2px 10px;
+	border-radius: 6px;
+	background: linear-gradient(100deg, var(--navy1, #12224d), var(--navy2, #2f5fbf));
+	color: #fff;
+	text-decoration: none;
+	line-height: 0;
+}
+a.home svg { width: 16px; height: 16px; padding: 4px 0; }
+.toc { margin: 24px 0; }
+.toc ol {
+	counter-reset: tocnum;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.toc ol li { counter-increment: tocnum; }
+.toc ol a {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
+	width: 310px;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: 6px 12px;
+	border-radius: 6px;
+	background: linear-gradient(100deg, var(--accent, #12224d), var(--accent2, #2f5fbf));
+	color: #fff;
+	font-weight: 700;
+	text-decoration: none;
+}
+.toc ol a::before { content: counter(tocnum) ". "; }
+section {
+	background: linear-gradient(180deg, var(--soft, #f2f5fb), #ffffff);
+	color: var(--ink, #1c2330);
+	padding: 4px 26px 26px;
+	margin: 34px 0;
+	border-radius: 8px;
+}
+section h1 {
+	background: linear-gradient(100deg, var(--accent, #12224d), var(--accent2, #2f5fbf));
+	color: #fff;
+	padding: 14px 20px;
+	margin: 26px 0 20px;
+	border-radius: 8px;
+	font-size: 1.5em;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+section h2 {
+	background: linear-gradient(90deg, var(--soft, #f2f5fb), #ffffff);
+	color: var(--accent, #12224d);
+	border-left: 6px solid var(--accent, #12224d);
+	padding: 6px 12px;
+	margin: 30px 0 12px;
+	font-size: 1.25em;
+}
+code {
+	background: var(--code-bg, #f4f6fa);
+	border: 1px solid var(--line, #d9dfe8);
+	color: #17335f;
+	padding: 0 4px;
+	border-radius: 4px;
+}
+.tablewrap { overflow-x: auto; }
+table {
+	border-collapse: collapse;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	margin: 10px 0;
+}
+th {
+	background: linear-gradient(100deg, var(--accent, #12224d), var(--accent2, #2f5fbf));
+	color: #fff;
+	padding: 9px 12px;
+	text-align: left;
+	white-space: nowrap;
+}
+td {
+	background: #ffffff;
+	color: var(--ink, #1c2330);
+	padding: 9px 12px;
+	vertical-align: top;
+	border-bottom: 1px solid var(--line, #d9dfe8);
+}
+tr:nth-child(even) td { background: #fafbfe; }
+.nowrap { white-space: nowrap; }
+.badge {
+	display: inline-block;
+	padding: 0 8px;
+	border-radius: 6px;
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.9em;
+	white-space: nowrap;
+}
+.b-ok { background: linear-gradient(100deg, #1d7a3c, #45b56c); color: #fff; }
+.b-ng { background: linear-gradient(100deg, #a51f22, #e05a5c); color: #fff; }
+.b-warn { background: linear-gradient(100deg, #b8620a, #f0a548); color: #fff; }
+.b-none { background: linear-gradient(100deg, #5a6472, #97a1ae); color: #fff; }
+.callout {
+	border-left: 6px solid var(--accent, #12224d);
+	background: linear-gradient(180deg, var(--soft, #f2f5fb), #ffffff);
+	color: var(--ink, #1c2330);
+	border-radius: 0 8px 8px 0;
+	padding: 10px 16px;
+	margin: 14px 0;
+}
+.callout strong { color: var(--accent, #12224d); background: transparent; }
+ul.src {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(max(320px, calc((100% - 2 * 24px) / 3)), 1fr));
+	column-gap: 24px;
+	row-gap: 2px;
+	padding-left: 1.2em;
+	font-size: 0.9em;
+	word-break: break-all;
+}
+ul.src li { display: list-item; }
+footer {
+	max-width: 1600px;
+	margin: 0 auto;
+	padding: 18px 30px 30px;
+}
+</style>
+</head>
+<body>
+<div class="titlebar">
+	<div class="inner">
+		<h1>パーソナルAIアシスタント調査</h1>
+		<p class="lead">2026年に出ているパーソナルAIアシスタント・常駐型エージェントの人気、日本で使えるか、料金の調査</p>
+		<p class="date">📅 作成: 2026-10-03 / 更新: 2026-10-03</p>
+	</div>
+</div>
+
+<div class="wrap">
+<a class="home" href="../" title="ホーム"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M2 8 L8 2.5 L14 8"/><path d="M4 7 V13.5 H12 V7"/></svg></a>
+
+<p>2026-10-03 時点の公開情報にもとづく。前半で最近の流れと人気の製品（順位・機能・評判）を、後半で日本で使えるものの一覧と、提供元ごとの各製品の概要・料金・日本で使えるかを載せる。</p>
+
+<nav class="toc">
+	<ol>
+		<li class="ch01"><a href="#ch01">いま流行っているパーソナルAIアシスタント</a></li>
+		<li class="ch02"><a href="#ch02">人気の上位</a></li>
+		<li class="ch03"><a href="#ch03">人気の製品の機能</a></li>
+		<li class="ch04"><a href="#ch04">日本で使えるもの</a></li>
+		<li class="ch05"><a href="#ch05">米国の大手 IT</a></li>
+		<li class="ch06"><a href="#ch06">米国の AI 企業</a></li>
+		<li class="ch07"><a href="#ch07">自分で動かすオープンソース</a></li>
+		<li class="ch08"><a href="#ch08">海外のスタートアップ</a></li>
+		<li class="ch09"><a href="#ch09">日本企業</a></li>
+		<li class="ch10"><a href="#ch10">中国・韓国の企業</a></li>
+		<li class="ch11"><a href="#ch11">AI端末・ウェアラブル</a></li>
+	</ol>
+</nav>
+
+<section class="ch01" id="ch01">
+<h1>いま流行っているパーソナルAIアシスタント</h1>
+
+<h2>2026年の流れ</h2>
+<p>2026年は「常駐型」が一気に広がった。2026年初めにオープンソースの OpenClaw が流行し、その後に大手各社が同じ型の製品を出した。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>時期</th><th>出来事</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">2025-11</td><td>オープンソースの常駐エージェント OpenClaw が公開される</td></tr>
+		<tr><td class="nowrap">2026年初め</td><td>OpenClaw が流行する</td></tr>
+		<tr><td class="nowrap">2026-02</td><td>Hermes Agent が公開される。nanobot・NanoClaw・PicoClaw など、OpenClaw の軽量版も相次ぐ</td></tr>
+		<tr><td class="nowrap">2026-03</td><td>スマホから <strong>Claude</strong> に作業を任せる <strong>Dispatch</strong></td></tr>
+		<tr><td class="nowrap">2026-04</td><td><strong>Claude Cowork</strong> が一般提供。LINEヤフーの Agent i</td></tr>
+		<tr><td class="nowrap">2026-05</td><td>Google が <strong>Gemini Spark</strong> を発表</td></tr>
+		<tr><td class="nowrap">2026-06</td><td>Microsoft Scout</td></tr>
+		<tr><td class="nowrap">2026-07</td><td><strong>ChatGPT Work</strong>。<strong>Gemini Spark</strong> が日本語で使えるようになる</td></tr>
+		<tr><td class="nowrap">2026-08</td><td><strong>Claude in Chrome</strong> が一般提供。Grok Bot のベータ</td></tr>
+		<tr><td class="nowrap">2026-09</td><td>Meta の <strong>Muse</strong> と OpenAI の <strong>dots</strong></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>パーソナルAIアシスタントとは</h2>
+<p>質問に答えるだけでなく、利用者専用のエージェントとして次のことを行うもの。</p>
+<ul>
+	<li>メール・カレンダー・ファイル・メッセージアプリにつながる</li>
+	<li>予定の調整、調べもの、返信の下書き、予約・購入などを自分から進める</li>
+	<li>好みや過去のやり取りを覚え、使うほど利用者に合っていく</li>
+</ul>
+
+<h2>分類</h2>
+<p>この資料では、次の7つの型で分ける。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>型</th><th>動く場所・特徴</th><th>例</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">汎用アシスタント</td><td>アプリ・Web で会話する。大手のアプリは、常駐型やエージェント特化の機能を中に持つ</td><td><strong>ChatGPT</strong>、<strong>Gemini</strong>、<strong>Claude</strong>、<strong>Meta AI</strong>、Microsoft Copilot</td></tr>
+		<tr><td class="nowrap">クラウド常駐型</td><td>提供元のクラウド。PC を閉じても動き続ける</td><td><strong>Gemini Spark</strong>、<strong>OpenAI dots</strong>、<strong>Meta Muse</strong>、Microsoft Scout</td></tr>
+		<tr><td class="nowrap">エージェント特化</td><td>提供元のクラウドの仮想マシン。頼んだ作業を最後まで仕上げる</td><td>Genspark、Manus、<strong>ChatGPT Work</strong></td></tr>
+		<tr><td class="nowrap">デスクトップ・ブラウザ型</td><td>手元の PC・ブラウザを操作する</td><td><strong>Claude Cowork</strong>、<strong>Claude in Chrome</strong>、Perplexity Comet</td></tr>
+		<tr><td class="nowrap">セルフホスト型</td><td>自分の PC・VPS。チャットアプリから指示する</td><td>OpenClaw、Hermes Agent</td></tr>
+		<tr><td class="nowrap">端末組み込み型</td><td>スマホ・OS・スピーカー</td><td>Siri AI、Pixel の <strong>Gemini</strong>、Alexa+、Galaxy AI</td></tr>
+		<tr><td class="nowrap">ウェアラブル型</td><td>メガネ・ペンダント・リング</td><td>Ray-Ban Meta、Plaud NotePin</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>料金の見方</h2>
+<ul>
+	<li>月額は月払いの金額、年額は年払いプランの1年分の金額。年払いの「月あたり」表示しかないものは12倍して載せている</li>
+	<li>年払いの無いものは「年払いなし」、公式に記載の無いものは「未確認」・「未公表」とした</li>
+	<li>円は日本の公式価格。ドルは米国での価格で、税は含まない</li>
+</ul>
+</section>
+
+<section class="ch02" id="ch02">
+<h1>人気の上位</h1>
+
+<h2>順位</h2>
+<p>利用者数、App Store の評価件数と星、口コミをもとにした順位。App Store の評価はこの章の最後に、製品ごとの口コミは「人気の製品の機能」の章に載せている。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>分類</th><th>順位</th><th>製品</th><th>日本</th><th>月額</th><th>人気を示す数字・評判</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">汎用アシスタント</td><td class="num nowrap">1位</td><td class="nowrap">🥇 <strong>ChatGPT（dots・Work）</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料〜<br><strong>Work</strong> は Plus 3,000円〜<br><strong>dots</strong> は Pro 16,800円〜</td><td>週12億人。日本の App Store の評価約254万件で突出。日本の利用率も1位</td></tr>
+		<tr><td class="nowrap">汎用アシスタント</td><td class="num nowrap">2位</td><td class="nowrap">🥈 <strong>Gemini（Spark）</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料〜<br><strong>Spark</strong> は AI Pro 2,900円〜</td><td>月10億人超。日本の評価約94万件。日本の利用経験率は2年で 3.2% から 27.4% に伸びた。Google のサービスとの連携が強み</td></tr>
+		<tr><td class="nowrap">汎用アシスタント</td><td class="num nowrap">3位</td><td class="nowrap">🥉 <strong>Meta AI</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span><br><strong>Muse</strong> は不可</td><td>無料</td><td>月12億人（推計）。WhatsApp・Instagram への組み込みによる数字で、日本の評価は約1,500件と少ない</td></tr>
+		<tr><td class="nowrap">汎用アシスタント</td><td class="num nowrap">4位</td><td class="nowrap">🏅 <strong>Claude（Cowork）</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料〜<br><strong>Cowork</strong> は Pro 20ドル〜</td><td>月2.4億〜2.7億人（推計）。文章とコードの質で評価が高い。日本の職場での利用率 7.8%</td></tr>
+		<tr><td class="nowrap">汎用アシスタント</td><td class="num nowrap">5位</td><td class="nowrap">Grok・Perplexity</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料〜<br>SuperGrok 30ドル<br>Perplexity Pro 20ドル</td><td>日本の評価 約18万件・約8.5万件。星はともに 4.6 以上</td></tr>
+		<tr><td class="nowrap">エージェント特化</td><td class="num nowrap">1位</td><td class="nowrap">🥇 <strong>Genspark</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料枠あり<br>Plus 24.99ドル〜</td><td>日本の評価 4.61（約1.9万件）。日本法人があり、国内の口コミが多い</td></tr>
+		<tr><td class="nowrap">エージェント特化</td><td class="num nowrap">2位</td><td class="nowrap">🥈 <strong>Manus</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料枠あり<br>20ドル〜</td><td>日本の評価 4.65（約1.3万件）、米国約3.9万件。プライバシーの懸念がよく挙がる</td></tr>
+		<tr><td class="nowrap">セルフホスト型</td><td class="num nowrap">1位</td><td class="nowrap">🥇 <strong>OpenClaw</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料（LLM の API 代は別）</td><td>GitHub スター 39.1万で最大。安全面の不安から乗り換え先を探す声が多い</td></tr>
+		<tr><td class="nowrap">セルフホスト型</td><td class="num nowrap">2位</td><td class="nowrap">🥈 <strong>Hermes Agent</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料（LLM の API 代は別）</td><td>GitHub スター 25.1万。Reddit で最も勧められる</td></tr>
+		<tr><td class="nowrap">ウェアラブル型</td><td class="num nowrap">1位</td><td class="nowrap">🥇 <strong>Plaud</strong></td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>本体 27,500円〜<br>無料枠あり・Pro 3,000円</td><td>日本の評価 4.66（約1.6万件）、米国 4.89。口コミの量・評価ともに頭ひとつ抜けている</td></tr>
+	</tbody>
+</table>
+</div>
+<p><strong>Meta AI</strong> と <strong>Claude</strong> の利用者数は調査会社の推計。<strong>ChatGPT</strong> は週、ほかは月の利用者数で、数え方がそろっていない。</p>
+
+<h2>評判から見えること</h2>
+<ul>
+	<li>上位は <strong>ChatGPT</strong>・<strong>Gemini</strong> の大手アプリに常駐型の機能（<strong>dots</strong>・<strong>Spark</strong>）が加わる形。単体の製品では Genspark・Manus（エージェント特化）と Plaud（録音・要約の端末）が、口コミの量・評価ともに目立つ</li>
+	<li>大手の常駐型（<strong>Spark</strong>・<strong>dots</strong>・<strong>Muse</strong>）は、始めてすぐの印象は良い一方、返信の遅さや使い込むまでの手間が不満に挙がる</li>
+	<li><strong>Spark</strong> は Google のサービスの中では強いが、それ以外とのつなぎ込みは弱い</li>
+	<li>セルフホスト型は、安全面の不安から OpenClaw を離れて Hermes Agent に移る流れがある</li>
+	<li>国内企業のアプリ（Buffmee・Rakuten AI・ポケとも）は、評価件数が少なく星も 3 点前後にとどまる</li>
+</ul>
+
+<h2>アプリストアの評価</h2>
+<p>App Store の星（5点満点）と評価件数。2026-10-03 時点。<strong>Gemini Spark</strong> と <strong>ChatGPT</strong> <strong>dots</strong> は、それぞれ <strong>Gemini</strong> と <strong>ChatGPT</strong> のアプリの中の機能なので、アプリの評価に含まれる。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>アプリ</th><th>日本</th><th>米国</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>ChatGPT</strong>（<strong>dots</strong> を含む）</td><td class="nowrap">4.66（約254万件）</td><td class="nowrap">4.83（約1,090万件）</td></tr>
+		<tr><td class="nowrap"><strong>Gemini</strong>（<strong>Spark</strong> を含む）</td><td class="nowrap">4.57（約94万件）</td><td class="nowrap">4.72（約230万件）</td></tr>
+		<tr><td class="nowrap">Grok</td><td class="nowrap">4.67（約18万件）</td><td class="nowrap">4.87（約147万件）</td></tr>
+		<tr><td class="nowrap">Perplexity</td><td class="nowrap">4.66（約8.5万件）</td><td class="nowrap">4.82（約51万件）</td></tr>
+		<tr><td class="nowrap"><strong>Claude</strong></td><td class="nowrap">4.54（約4.1万件）</td><td class="nowrap">4.72（約27万件）</td></tr>
+		<tr><td class="nowrap">Genspark</td><td class="nowrap">4.61（約1.9万件）</td><td class="nowrap">4.71（約4,300件）</td></tr>
+		<tr><td class="nowrap">Plaud</td><td class="nowrap">4.66（約1.6万件）</td><td class="nowrap">4.89（約2.3万件）</td></tr>
+		<tr><td class="nowrap">Manus</td><td class="nowrap">4.65（約1.3万件）</td><td class="nowrap">4.73（約3.9万件）</td></tr>
+		<tr><td class="nowrap">Cotomo</td><td class="nowrap">4.13（約7,300件）</td><td class="nowrap">4.14（7件）</td></tr>
+		<tr><td class="nowrap">Dola</td><td class="nowrap">4.45（約2,100件）</td><td class="nowrap">—</td></tr>
+		<tr><td class="nowrap"><strong>Meta AI</strong></td><td class="nowrap">4.31（約1,500件）</td><td class="nowrap">4.69（約26万件）</td></tr>
+		<tr><td class="nowrap">Comet（Perplexity）</td><td class="nowrap">4.43（600件）</td><td class="nowrap">4.75（約7,800件）</td></tr>
+		<tr><td class="nowrap">Kimi</td><td class="nowrap">4.78（469件）</td><td class="nowrap">4.75（約5,200件）</td></tr>
+		<tr><td class="nowrap">Felo</td><td class="nowrap">3.61（85件）</td><td class="nowrap">3.38（21件）</td></tr>
+		<tr><td class="nowrap">Rakuten AI</td><td class="nowrap">3.78（59件）</td><td class="nowrap">—</td></tr>
+		<tr><td class="nowrap">ポケとも</td><td class="nowrap">2.92（39件）</td><td class="nowrap">—</td></tr>
+		<tr><td class="nowrap">Buffmee</td><td class="nowrap">3.24（34件）</td><td class="nowrap">—</td></tr>
+		<tr><td class="nowrap">Superhuman</td><td class="nowrap">4.62（13件）</td><td class="nowrap">4.60（約3,700件）</td></tr>
+		<tr><td class="nowrap">Motion</td><td class="nowrap">3.63（8件）</td><td class="nowrap">4.09（約1,900件）</td></tr>
+		<tr><td class="nowrap">Martin</td><td class="nowrap">4.0（1件）</td><td class="nowrap">4.26（250件）</td></tr>
+		<tr><td class="nowrap">Saner.ai</td><td class="nowrap">評価なし</td><td class="nowrap">3.0（13件）</td></tr>
+		<tr><td class="nowrap">alfred_</td><td class="nowrap">評価なし</td><td class="nowrap">5.0（3件）</td></tr>
+	</tbody>
+</table>
+</div>
+<p>Poke・Lindy・Opera Neon は App Store で見つからなかった。LINEヤフーの Agent i は単体のアプリが無い。</p>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://www.theverge.com/ai-artificial-intelligence/1002265/chatgpt-now-has-1-2-billion-weekly-users-openai-says">ChatGPT now has 1.2 billion weekly users (The Verge)</a></li>
+	<li><a href="https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/">Gemini app hits 1 billion monthly users (Google)</a></li>
+	<li><a href="https://aibusinessweekly.net/p/meta-ai-statistics">Meta AI Statistics 2026 (AI Business Weekly)</a></li>
+	<li><a href="https://firstpagesage.com/reports/claude-usage-statistics/">Claude Usage Statistics (First Page Sage)</a></li>
+	<li><a href="https://aiteller.jp/blog/ai-fukyu-data-hub">AI普及率 日本【2026年版】(AI teller)</a></li>
+	<li><a href="https://prtimes.jp/main/html/rd/p/000000014.000169560.html">職場AIは「3強時代」へ (PR TIMES)</a></li>
+	<li><a href="https://www.vellum.ai/blog/best-ai-assistant-reddit">Best AI Assistants According to Reddit (Vellum。自社製品を1位にしている)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/chatgpt/id6448311069">ChatGPT (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/google-gemini/id6477489729">Google Gemini (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/genspark-%E3%82%B8%E3%82%A7%E3%83%B3%E3%82%B9%E3%83%91%E3%83%BC%E3%82%AF-ai%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B9%E3%83%9A%E3%83%BC%E3%82%B9/id6739554054">Genspark (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/manus-ai-%E3%83%9E%E3%83%8A%E3%82%B9-%E6%B1%8E%E7%94%A8ai%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88-%E8%87%AA%E5%8B%95%E5%8C%96/id6740909540">Manus (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/rakuten-ai-%E6%97%A5%E6%9C%AC%E7%99%BA%E3%81%AE%E4%BF%A1%E9%A0%BC%E3%81%A7%E3%81%8D%E3%82%8BAI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88/id6755221470">Rakuten AI (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/%E3%83%9D%E3%82%B1%E3%81%A8%E3%82%82/id6751520345">ポケとも (App Store)</a></li>
+</ul>
+</section>
+
+<section class="ch03" id="ch03">
+<h1>人気の製品の機能</h1>
+
+<h2>機能の比較</h2>
+<p>人気の上位から、常駐型・エージェント型の8製品を選んで比べる。Plaud（録音の端末）と Grok・Perplexity（チャットが中心）は、比べる機能がほかと違うので外した。<strong>dots</strong> の値は報道による。2026-10-03 時点。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>動く場所</th><th>頼み方</th><th>つながるサービス</th><th>自分から動く</th><th>Web の操作</th><th>手元の PC・ファイル</th><th>記憶・スキル</th><th>日本</th><th>月額</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>OpenAI dots</strong></td><td>クラウド（専用のクラウド PC。常時動く）</td><td><strong>ChatGPT</strong> のアプリ・Web、Slack、Teams</td><td>4,000以上のアプリ（Google ドライブ・メールなど）</td><td>動く（定期実行・きっかけで起動・先回りの調査）</td><td>できる（専用のブラウザ）</td><td>許可すれば手元の PC につなげる</td><td>好みや経緯を覚える。スキルの保存は未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>Pro 16,800円〜</td></tr>
+		<tr><td class="nowrap"><strong>Gemini Spark</strong></td><td>クラウド（Google Cloud の専用 VM。24時間動く）</td><td><strong>Gemini</strong> アプリ、専用の Gmail アドレス</td><td>Workspace（Gmail など）</td><td>動く（決まった時刻・メールの受信で起動）</td><td>できる（Google 以外は画面を読み取って操作）</td><td>できない</td><td>自分用のスキルを作れる</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>AI Pro 2,900円〜</td></tr>
+		<tr><td class="nowrap"><strong>Meta Muse</strong></td><td>クラウド（専用の VM。アプリを閉じても動く）</td><td><strong>Muse</strong> のアプリ・Web、WhatsApp</td><td>利用者が選んだアプリ（メール・買い物・旅行の予約など）</td><td>頼まれなくても提案する。定期実行は未確認</td><td>できる（専用のブラウザでフォームに入力）</td><td>未確認</td><td>大事なことを覚え、「忘れて」で消せる。スキルは未確認</td><td class="nowrap"><span class="badge b-ng">不可</span></td><td>無料枠あり<br>Power 20ドル〜</td></tr>
+		<tr><td class="nowrap"><strong>Claude Cowork</strong></td><td>クラウド（ベータ）と手元の PC。手元の作業にはデスクトップアプリが要る</td><td>デスクトップ・Web・スマホのアプリ、<strong>Dispatch</strong></td><td>Google Workspace・Slack・GitHub・Microsoft 365 など</td><td>動く（定期タスク。PC がスリープでも実行）</td><td>できる（内蔵のブラウザ、<strong>Claude in Chrome</strong>）</td><td>できる（許可したフォルダだけ）</td><td>チャットと共有の記憶、スキル、プラグイン</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>Pro 20ドル〜</td></tr>
+		<tr><td class="nowrap">Genspark</td><td>クラウド</td><td>Web・デスクトップ・スマホのアプリ。音声でも頼める</td><td>Gmail など Google のサービス</td><td>Gmail のワークフローは自動で動く。定期実行は未確認</td><td>できる（AI Browser）</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料枠あり<br>Plus 24.99ドル〜</td></tr>
+		<tr><td class="nowrap">Manus</td><td>クラウドの仮想マシン</td><td>Web・アプリ・メール・Slack</td><td>Gmail・Google カレンダー・ドライブ・Notion など</td><td>動く（定期実行・きっかけで起動）</td><td>できる（クラウドのブラウザ、Chrome・Edge の拡張）</td><td>できる（デスクトップアプリ。許可したフォルダだけ）</td><td>うまくいった手順をスキルとして保存できる</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料枠あり<br>20ドル〜</td></tr>
+		<tr><td class="nowrap">OpenClaw</td><td>自分の PC・VPS</td><td>約30のチャット（Slack・WhatsApp・LINE など）</td><td>Gmail（受信で起動）、MCP、プラグイン</td><td>動く（定期実行・30分ごとの見回り・Webhook）</td><td>できる（専用のブラウザのプロファイル）</td><td>できる（シェル・ファイルの編集）</td><td>ファイルに記憶する。スキルを足せ、自作は承認してから有効</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料（LLM の API 代は別）</td></tr>
+		<tr><td class="nowrap">Hermes Agent</td><td>自分の PC・VPS</td><td>25以上のチャット（Slack・WhatsApp・メール・LINE など）</td><td>MCP（GitHub・Notion など）</td><td>動く（定期実行）</td><td>できる（手元の Chrome、クラウドのブラウザ）</td><td>できる（ターミナル・ファイルの編集）</td><td>記憶を持ち、スキルを自分で作って使いながら直す</td><td class="nowrap"><span class="badge b-ok">利用可</span></td><td>無料（LLM の API 代は別）</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>製品ごとの評判</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>良い声</th><th>不満・注意の声</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>Gemini Spark</strong></td><td>毎朝の定時やメールの受信をきっかけに自動で動き、PC やスマホの電源を切っていても進む。教員の実例では、LINE・GAS と組み合わせて授業準備が週30分〜2時間からほぼ0分になった</td><td>自分の PC の画面やローカルのファイルは操作できない。Google 以外のサービスとは画面を読み取って操作する形になる。仕事用・学校用のアカウントでは使えず、教員が仕事で使える形ではまだないという声</td></tr>
+		<tr><td class="nowrap"><strong>ChatGPT</strong> <strong>dots</strong></td><td>「1時間触って手放せない」。Google ドライブや Slack の接続がクリックだけで済む。ペットの姿のキャラクターに愛着がわく。会話していない間も先回りして提案が出る</td><td>Slack での返信に約3分かかり、リアルタイムの用途には向かない。届いたかどうかが分かりにくい。音声通話は応答をかなり待つ。使い込むまでが不便で、最初に慣れる前にやめてしまいやすい</td></tr>
+		<tr><td class="nowrap"><strong>Meta Muse</strong></td><td>試したパーソナルエージェントの中で最も使い勝手の設計が良いという評。家族の予定から朝の案内 PDF を一度で作った。許可の仕組みがほかと違って分かりやすい</td><td>渡すデータが多いほど便利になる反面「便利で怖い」（WSJ）。日本では使えない</td></tr>
+		<tr><td class="nowrap"><strong>Claude Cowork</strong></td><td>フォルダの整理や名刺からのデータ抽出など、定型作業の時短になる。スキルを作って保存すると便利になる</td><td>料金と使用量の制限、セキュリティや誤操作を心配する声</td></tr>
+		<tr><td class="nowrap">Hermes Agent</td><td>Reddit で最も勧められるセルフホスト型。使うほど自分で賢くなる。OpenClaw から設定・記憶・スキルを移せる</td><td>導入と保守に技術の知識が要る。定時実行（cron）や中継部分（ゲートウェイ）が壊れるという報告</td></tr>
+		<tr><td class="nowrap">OpenClaw</td><td>導入事例・解説記事が最も多い</td><td>Reddit ではシェル操作や平文の API キーなど安全面の話題が中心で、代わりを探すスレッドが多い。国内でも Hermes Agent への乗り換えの報告がある</td></tr>
+		<tr><td class="nowrap">Genspark</td><td>ITreview の平均 4.2／5。目的がはっきりしている人には強力。資料作成の時短</td><td>クレジットの消費が多い。目的があいまいだと評価が割れる</td></tr>
+		<tr><td class="nowrap">Manus</td><td>手放しで何段階もの作業を最後まで実行する</td><td>プライバシーの懸念が Reddit でよく挙がる</td></tr>
+		<tr><td class="nowrap">Lindy</td><td>メールとカレンダーの扱いが洗練されている</td><td>できる範囲が狭い</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://venturebeat.com/technology/openai-launches-dots-always-on-ai-agent-coworkers-and-chatgpt-space-where-they-can-collaborate-with-human-teams">OpenAI launches dots (VentureBeat)</a></li>
+	<li><a href="https://apptime.co.jp/media/chatgpt-dots/">ChatGPT dots (apptime)</a></li>
+	<li><a href="https://support.google.com/gemini/answer/17094507?hl=ja&amp;co=GENIE.Platform%3DDesktop">Gemini Spark ヘルプ (Google)</a></li>
+	<li><a href="https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/">Introducing Muse (Meta)</a></li>
+	<li><a href="https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork">Get started with Claude Cowork (Anthropic)</a></li>
+	<li><a href="https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork">Schedule recurring tasks in Claude Cowork (Anthropic)</a></li>
+	<li><a href="https://claude.com/blog/claude-in-chrome-generally-available">Claude in Chrome generally available (Anthropic)</a></li>
+	<li><a href="https://aismiley.co.jp/ai_news/genspark-jp-ai-workspace/">Genspark 日本法人 (AISmiley)</a></li>
+	<li><a href="https://www.genspark.ai/blog">Genspark Blog (Genspark)</a></li>
+	<li><a href="https://manus.im/docs/features/mail-manus.md">Mail Manus (Manus)</a></li>
+	<li><a href="https://manus.im/docs/integrations/mcp-connectors.md">MCP connectors (Manus)</a></li>
+	<li><a href="https://manus.im/docs/automations.md">Automations (Manus)</a></li>
+	<li><a href="https://manus.im/docs/features/cloud-browser.md">Cloud browser (Manus)</a></li>
+	<li><a href="https://manus.im/docs/features/desktop.md">Desktop (Manus)</a></li>
+	<li><a href="https://manus.im/docs/features/skills.md">Skills (Manus)</a></li>
+	<li><a href="https://docs.openclaw.ai/channels">Channels (OpenClaw Docs)</a></li>
+	<li><a href="https://docs.openclaw.ai/gateway/heartbeat">Heartbeat (OpenClaw Docs)</a></li>
+	<li><a href="https://docs.openclaw.ai/tools/browser">Browser (OpenClaw Docs)</a></li>
+	<li><a href="https://docs.openclaw.ai/tools/exec">Exec (OpenClaw Docs)</a></li>
+	<li><a href="https://docs.openclaw.ai/concepts/memory">Memory (OpenClaw Docs)</a></li>
+	<li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/messaging">Messaging (Hermes Agent)</a></li>
+	<li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/cron">Cron (Hermes Agent)</a></li>
+	<li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/browser">Browser (Hermes Agent)</a></li>
+	<li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/features/skills">Skills (Hermes Agent)</a></li>
+	<li><a href="https://tcd-theme.com/2026/08/gemini-spark.html">Gemini Spark レビュー (TCD)</a></li>
+	<li><a href="https://note.com/cozy_echium728/n/n2795ec07b013">LINE×GAS×Gemini Spark で授業準備 (note)</a></li>
+	<li><a href="https://note.com/sensei_playflow/n/nc344dd3e2a71">Gemini Spark が来た。でも学校アカウントでは使えない (note)</a></li>
+	<li><a href="https://note.com/azumimusuhi/n/n83d406234083">ドットを1時間触ってみた (note)</a></li>
+	<li><a href="https://lolipop.jp/ai/media/what-is-openai-dots/">OpenAI dots とは (ロリポップ！)</a></li>
+	<li><a href="https://listen.style/p/karaage0703/c6yszl33">dots を試して考えた AI アシスタントの使い心地 (LISTEN)</a></li>
+	<li><a href="https://www.lennysnewsletter.com/p/muse-review-the-personal-ai-agent">Muse review (Lenny's Newsletter)</a></li>
+	<li><a href="https://www.wsj.com/tech/personal-tech/meta-muse-ai-agent-review-ab956101">Meta Muse AI Agent Review (WSJ)</a></li>
+	<li><a href="https://mirai-works.co.jp/business-pro/business-column/claude-cowork-review/">Claude Cowork の口コミ・評判 (みらいワークス)</a></li>
+	<li><a href="https://www.vellum.ai/blog/best-ai-assistant-reddit">Best AI Assistants According to Reddit (Vellum。自社製品を1位にしている)</a></li>
+	<li><a href="https://note.com/gb10_tsurumitsu/n/n5ec910c057b6">OpenClaw から Hermes Agent に乗り換えて (note)</a></li>
+	<li><a href="https://ai-search.techsuite.co.jp/12879/">Genspark の評判 (AI検索パートナーズ)</a></li>
+</ul>
+</section>
+
+<section class="ch04" id="ch04">
+<h1>日本で使えるもの</h1>
+<p>凡例: <span class="badge b-ok">利用可</span> 公式か国内の報道で確認 ／ <span class="badge b-warn">条件付き</span> 契約・機種・プレビューなどの条件あり ／ <span class="badge b-ng">不可</span> 日本では提供なし・終了 ／ <span class="badge b-none">未確認</span> 確認できなかった。AI端末・ウェアラブルは「AI端末・ウェアラブル」の章に載せている。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>日本</th><th>型</th><th>製品</th><th>条件・補足</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">汎用アシスタント</td><td><strong>ChatGPT</strong>、<strong>Claude</strong>、<strong>Gemini</strong>・<strong>Gemini Live</strong>、Microsoft Copilot、<strong>Meta AI</strong>、Grok、Perplexity、Apple Intelligence、Rakuten AI、Buffmee（KDDI）、Dola（旧 Cici）、Qwen、Kimi、DeepSeek</td><td>DeepSeek は、データに中国の法令が適用されるとして、個人情報保護委員会が注意を呼びかけている</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">汎用アシスタント</td><td class="nowrap">Agent i（LINEヤフー）</td><td>基本無料。LINE・Yahoo! JAPAN から使う</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap"><strong>Gemini Spark</strong>（Google）</td><td>Google AI Pro（月2,900円）か Ultra。日本では 2026-07 から日本語で提供</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap"><strong>OpenAI dots</strong></td><td><strong>ChatGPT</strong> Pro（EEA・スイス・英国以外）と Business Premium。日本語の公式ヘルプあり。段階的に展開中で、使えるまで数日かかる場合あり</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">エージェント特化</td><td class="nowrap"><strong>ChatGPT Work</strong></td><td><strong>ChatGPT</strong> の有料プラン。対応する全地域で提供。旧 <strong>ChatGPT agent</strong> はここへ統合された</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">エージェント特化</td><td class="nowrap">Genspark</td><td>日本法人あり。電話の代行は日本語に対応</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">エージェント特化</td><td class="nowrap">Manus</td><td>日本語の画面と指示に対応</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">デスクトップ・ブラウザ型</td><td class="nowrap"><strong>Claude Cowork</strong>・<strong>Dispatch</strong>・<strong>Claude in Chrome</strong></td><td><strong>Claude</strong> の有料プラン</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">デスクトップ・ブラウザ型</td><td class="nowrap">Perplexity Comet</td><td>無料の AI ブラウザ。日本語で指示・応答できると国内記事で確認</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ok">利用可</span></td><td class="nowrap">セルフホスト型</td><td class="nowrap">OpenClaw・Hermes Agent・PicoClaw</td><td>自分で動かすため国の制限なし。LINE に対応（LINE 公式アカウントと HTTPS の webhook が要る）。安全面の注意は「自分で動かすオープンソース」の章</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">汎用アシスタント</td><td class="nowrap">SyncMe（ドコモ）</td><td>一般提供は秋に延期され、まだ始まっていない</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap">Microsoft Scout・Copilot Cowork・Autopilot</td><td>法人ライセンスと Frontier プログラムへの参加が前提</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">デスクトップ・ブラウザ型</td><td class="nowrap"><strong>Gemini in Chrome</strong>（Google）</td><td>デスクトップのみ</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">端末組み込み型</td><td class="nowrap"><strong>Gemini for Home</strong>・Pixel 11 の <strong>Gemini Intelligence</strong></td><td><strong>Gemini for Home</strong> は早期アクセス。Pixel 11 は日本で順次</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">端末組み込み型</td><td class="nowrap">Siri AI（Apple）</td><td>日本語は開発者向けベータ（iOS 27.2 Beta 1）で対応済み。一般向けは10月中に配信予定</td></tr>
+		<tr><td class="nowrap"><span class="badge b-warn">条件付き</span></td><td class="nowrap">端末組み込み型</td><td class="nowrap">Natural AI Phone（ソフトバンク）</td><td>専用端末とソフトバンク回線</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ng">不可</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap"><strong>Muse</strong>（Meta）</td><td>米国のみ</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ng">不可</span></td><td class="nowrap">デスクトップ・ブラウザ型</td><td class="nowrap">Chrome の自動ブラウジング（Google）</td><td>米国のみ・英語のみ</td></tr>
+		<tr><td class="nowrap"><span class="badge b-ng">不可</span></td><td class="nowrap">端末組み込み型</td><td class="nowrap">Alexa+（Amazon）</td><td>提供は11か国で、日本は時期未定。対応した Echo は日本でも販売中</td></tr>
+		<tr><td class="nowrap"><span class="badge b-none">未確認</span></td><td class="nowrap">汎用アシスタント</td><td class="nowrap">Superhuman Go・Saner.ai</td><td>地域・日本語の記載なし</td></tr>
+		<tr><td class="nowrap"><span class="badge b-none">未確認</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap">Grok Bot（xAI）</td><td>公式発表に地域制限の記載はないが、日本での提供の発表もない</td></tr>
+		<tr><td class="nowrap"><span class="badge b-none">未確認</span></td><td class="nowrap">クラウド常駐型</td><td class="nowrap">Lindy・alfred_</td><td>地域・日本語の記載なし</td></tr>
+		<tr><td class="nowrap"><span class="badge b-none">未確認</span></td><td class="nowrap">エージェント特化</td><td class="nowrap">Perplexity Computer・Personal Computer</td><td>地域の記載なし</td></tr>
+	</tbody>
+</table>
+</div>
+</section>
+
+<section class="ch05" id="ch05">
+<h1>米国の大手 IT</h1>
+
+<h2>Google</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>Gemini Spark</strong></td><td class="nowrap">2026-05 発表</td><td>Google Cloud の専用 VM で24時間動くエージェント。専用の Gmail アドレスへメールで頼める。Workspace と連携し、自分用のスキルを作れる。旧称は <strong>Gemini Agent</strong></td><td>AI Pro（5TB）2,900円・（10TB）7,280円<br>AI Ultra 14,500円・32,000円</td><td>AI Pro（5TB）29,000円<br>AI Pro（10TB）・AI Ultra は年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>2026-07〜</td></tr>
+		<tr><td class="nowrap"><strong>Gemini in Chrome</strong></td><td class="nowrap">2026-04 日本へ</td><td>Chrome 組み込みのアシスタント。タブの要約・比較、Google の各サービスとの連携</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>デスクトップのみ</td></tr>
+		<tr><td class="nowrap">Chrome 自動ブラウジング</td><td class="nowrap">2026-01</td><td>Web 上の何段階もある操作（買い物・予約）を代わりに実行</td><td>AI Pro・Ultra に含む</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Daily Brief</td><td class="nowrap">2026-05</td><td>朝のまとめを自動で作る</td><td>AI Plus 以上に含む（AI Plus（2TB）は 1,450円）</td><td>AI Plus（2TB）14,500円</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap"><strong>Gemini Live</strong></td><td class="nowrap">—</td><td>音声で会話し、カメラ映像や画面を見せられる。Project Astra の成果を取り込んだもの</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Pixel 11 の <strong>Gemini Intelligence</strong></td><td class="nowrap">2026-08</td><td>先回りの提案、40以上のアプリをまたいだ操作の代行</td><td>端末代のみ</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>日本は順次</td></tr>
+		<tr><td class="nowrap"><strong>Gemini for Home</strong></td><td class="nowrap">2026-04 日本</td><td>Nest 向けの音声アシスタント。Google アシスタントの後継</td><td>基本無料<br>Home Premium Standard 1,000円・Advanced 2,000円</td><td>Advanced 20,000円</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>早期アクセス</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Meta</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>Meta AI</strong></td><td class="nowrap">2025-11 日本</td><td>アプリ・Instagram・WhatsApp などのアシスタント</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap"><strong>Muse</strong></td><td class="nowrap">2026-09</td><td>クラウド VM で動く常駐エージェント。メール・予約・交渉までこなす</td><td>無料枠あり<br>Power 20ドル・Maximum 100ドル</td><td>未確認</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Microsoft</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Microsoft Copilot（個人向け）</td><td class="nowrap">—</td><td>Copilot アプリと、Office アプリ内の Copilot</td><td>無料<br>Microsoft 365 Personal 2,130円・Premium 3,200円</td><td>Personal 21,300円<br>Premium 32,000円</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Microsoft Scout</td><td class="nowrap">2026-06</td><td>常時動くパーソナルエージェント。Teams・Outlook をまたいで予定調整・会議準備を行う。OpenClaw に着想</td><td>未公表（GitHub Copilot などのライセンスが前提）</td><td>未公表</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>プレビュー</td></tr>
+		<tr><td class="nowrap">Copilot Cowork・Autopilot</td><td class="nowrap">2026-06・09</td><td>長時間の作業を最後まで実行するエージェント。Autopilot はログオフ後もクラウドで動く</td><td>法人ライセンス＋従量課金（1クレジット 0.01ドル）</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span></td></tr>
+		<tr><td class="nowrap">Browse with Copilot（Edge）</td><td class="nowrap">2026-05</td><td>ブラウザ操作の代行</td><td>Microsoft 365 Premium 3,200円</td><td>32,000円</td><td class="nowrap"><span class="badge b-ng">不可</span><br>米国のみ</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Apple</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Siri AI</td><td class="nowrap">2026-09 英語ベータ</td><td><strong>Gemini</strong> と共同で作ったモデルを使う新しい Siri。個人の文脈を理解し、アプリをまたいで操作する</td><td>無料（回数上限あり）</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>日本語は開発者ベータで対応</td></tr>
+		<tr><td class="nowrap">Apple Intelligence</td><td class="nowrap">2025-04 日本語</td><td>OS 組み込みの AI 機能</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Amazon</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Alexa+</td><td class="nowrap">2026-02 米国全体</td><td>生成 AI を使った新しい Alexa。予約などを代わりに行う。2026-09-30 に Fire TV への搭載を発表（米国で11月から）。日本での提供時期は未発表</td><td>Prime 会員は無料<br>非会員は 19.99ドル（米国）</td><td>Prime 会費に含む</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Alexa for Shopping</td><td class="nowrap">2026-05</td><td>Rufus の後継で、買い物用のエージェント</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span><br>日本は Rufus</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>終了したもの</h2>
+<ul>
+	<li>Project Mariner（Google）: ブラウザ操作エージェント。2026-05 に終了し、技術は <strong>Spark</strong> と Chrome に移された</li>
+</ul>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://techcrunch.com/2026/05/19/google-introduces-gemini-spark-a-24-7-agentic-assistant-with-gmail-integration/">Google introduces Gemini Spark (TechCrunch)</a></li>
+	<li><a href="https://support.google.com/gemini/answer/17094507?hl=ja&amp;co=GENIE.Platform%3DDesktop">Gemini Spark ヘルプ (Google)</a></li>
+	<li><a href="https://www.watch.impress.co.jp/docs/news/2125584.html">Gemini Spark 日本語で展開 (Impress Watch)</a></li>
+	<li><a href="https://blog.google/innovation-and-ai/products/gemini-app/next-evolution-gemini-app/">Next evolution of the Gemini app (Google)</a></li>
+	<li><a href="https://blog.google/products-and-platforms/products/chrome/chrome-expands-apac/">Gemini in Chrome expands to APAC (Google)</a></li>
+	<li><a href="https://support.google.com/chrome/answer/16821166?hl=ja">Chrome 自動ブラウジング ヘルプ (Google)</a></li>
+	<li><a href="https://support.google.com/gemini/answer/15274899?hl=ja">Gemini Live ヘルプ (Google)</a></li>
+	<li><a href="https://www.itmedia.co.jp/news/article/2608/12/2000000516/">Pixel 11 (ITmedia)</a></li>
+	<li><a href="https://blog.google/intl/ja-jp/products/devices-services/gemini-for-home/">Gemini for Home (Google Japan)</a></li>
+	<li><a href="https://one.google.com/about/google-ai-plans?hl=ja">Google AI のプラン (Google One)</a></li>
+	<li><a href="https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/">Introducing Muse (Meta)</a></li>
+	<li><a href="https://aismiley.co.jp/ai_news/what-is-meta-ai/">Meta AI とは (AISmiley)</a></li>
+	<li><a href="https://www.microsoft.com/ja-jp/microsoft-365/buy/compare-all-microsoft-365-products">Microsoft 365 のプラン比較 (Microsoft)</a></li>
+	<li><a href="https://support.microsoft.com/en-us/microsoft-copilot/supported-regions-and-languages-in-microsoft-copilot">Copilot supported regions (Microsoft)</a></li>
+	<li><a href="https://www.microsoft.com/en-us/copilot/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Introducing Microsoft Scout (Microsoft)</a></li>
+	<li><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/16/copilot-cowork-is-now-generally-available/">Copilot Cowork GA (Microsoft)</a></li>
+	<li><a href="https://fortune.com/2026/09/25/microsoft-unveils-copilot-super-app-targeting-business-users-with-ai-agents/">Copilot super app (Fortune)</a></li>
+	<li><a href="https://www.apple.com/jp/newsroom/2026/09/the-next-generation-of-apple-intelligence-is-available-today/">次世代 Apple Intelligence (Apple)</a></li>
+	<li><a href="https://support.apple.com/ja-jp/121115">Apple Intelligence の対応言語 (Apple)</a></li>
+	<li><a href="https://www.apple-hacks.com/entry/os-27-2-beta1-siri-ai-japanese">iOS 27.2 Beta 1 で Siri AI が日本語に対応 (となりずむ)</a></li>
+	<li><a href="https://www.aboutamazon.com/news/devices/alexa-plus-fire-tv-hub-mobile-app-updates">Alexa+ is making Fire TV smarter (Amazon)</a></li>
+	<li><a href="https://www.aboutamazon.com/news/devices/alexa-plus-international-launch">Alexa+ international launch (Amazon)</a></li>
+	<li><a href="https://www.itmedia.co.jp/news/articles/2602/19/news073.html">Alexa+ の日本提供 (ITmedia)</a></li>
+	<li><a href="https://www.itmedia.co.jp/news/article/2605/14/1260514089/">Alexa for Shopping (ITmedia)</a></li>
+</ul>
+</section>
+
+<section class="ch06" id="ch06">
+<h1>米国の AI 企業</h1>
+
+<h2>OpenAI</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>OpenAI dots</strong></td><td class="nowrap">2026-09</td><td>常時動くパーソナルエージェント。GPT-6 Astra で動き、専用のクラウド PC とブラウザを持つ。4,000以上のアプリに接続し、<strong>ChatGPT</strong>・Slack・Teams から話しかけられる。人と共有する作業場所「<strong>ChatGPT Space</strong>」もある。1体目は追加料金なし</td><td>Pro 16,800円・30,000円・84,000円<br>Business Premium 19,250円／席</td><td>Pro は年払いなし<br>Business Premium 183,000円／席</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>順次展開</td></tr>
+		<tr><td class="nowrap"><strong>ChatGPT Work</strong></td><td class="nowrap">2026-07</td><td>数分〜数時間かけて資料・Web アプリなどを仕上げる。クラウドブラウザで Web も操作する</td><td>Plus 3,000円以上に含む</td><td>個人プランは年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap"><strong>workspace agents</strong></td><td class="nowrap">2026-04</td><td>チーム向けのクラウドエージェント</td><td>Business 3,850円／席</td><td>Business 36,600円／席</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Anthropic</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap"><strong>Claude Cowork</strong></td><td class="nowrap">2026-04 一般提供</td><td>デスクトップのエージェント。ローカルのファイルを扱い、定期タスクを持つ。Web とモバイルにも対応</td><td>Pro 20ドル<br>Max 100ドル・200ドル</td><td>Pro 200ドル<br>Max は年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap"><strong>Dispatch</strong></td><td class="nowrap">2026-03</td><td>スマホから、自宅のデスクトップで動く <strong>Claude</strong> に作業を任せる常駐スレッド</td><td>Pro 20ドル<br>Max 100ドル・200ドル</td><td>Pro 200ドル<br>Max は年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap"><strong>Claude in Chrome</strong></td><td class="nowrap">2026-08 一般提供</td><td>Chrome 拡張でブラウザを自律的に操作する</td><td>Pro 20ドル<br>Max 100ドル・200ドル</td><td>Pro 200ドル<br>Max は年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>xAI</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Grok</td><td class="nowrap">—</td><td>チャット AI。xAI は 2026-02 に SpaceX 傘下に入り、2026-07 に SpaceXAI へ改称</td><td>SuperGrok 30ドル<br>SuperGrok Heavy 300ドル</td><td>SuperGrok 300ドル<br>Heavy は未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>日本の App Store で配信</td></tr>
+		<tr><td class="nowrap">Grok Bot</td><td class="nowrap">2026-08 ベータ</td><td>専用のクラウド PC で24時間動く「AI チームメイト」。アプリにログインして作業し、複数の Bot が互いに連携する。デスクトップと iOS</td><td>SuperGrok・Cursor の有料プランに含む</td><td>—</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>Perplexity</h2>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Perplexity</td><td class="nowrap">—</td><td>出典つきで答える AI 検索・チャット</td><td>無料<br>Pro 20ドル・Max 200ドル</td><td>Pro 204ドル<br>Max 2,004ドル</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>日本の App Store で配信</td></tr>
+		<tr><td class="nowrap">Perplexity Comet</td><td class="nowrap">2025-07</td><td>AI ブラウザ。アシスタントが要約・購入などを代行する</td><td>無料<br>Comet Plus 5ドル</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Perplexity Computer・Personal Computer</td><td class="nowrap">2026-02・05</td><td>複数のモデルで自律実行するクラウドエージェントと、それを Mac で常駐させる版</td><td>Pro 20ドル<br>Max 200ドル</td><td>Pro 204ドル<br>Max 2,004ドル</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>終了したもの</h2>
+<ul>
+	<li><strong>ChatGPT agent</strong>: 2025-07 に始まった、仮想のブラウザで Web を操作するエージェントモード。提供を終え、<strong>ChatGPT Work</strong> へ移行</li>
+	<li><strong>ChatGPT Pulse</strong>: 2026-06 に終了を発表し、定期タスクへ移行</li>
+	<li>ChatGPT Atlas: OpenAI のブラウザ。2026-08 に終了</li>
+</ul>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://chatgpt.com/ja-JP/pricing">ChatGPT の料金 (OpenAI)</a></li>
+	<li><a href="https://openai.com/ja-JP/index/introducing-dots/">dots のご紹介 (OpenAI)</a></li>
+	<li><a href="https://help.openai.com/ja-jp/articles/20001530-getting-started-with-your-dot">dot スタートガイド (OpenAI)</a></li>
+	<li><a href="https://help.openai.com/ja-jp/articles/11752874-chatgpt-agent">ChatGPT エージェント (OpenAI)</a></li>
+	<li><a href="https://help.openai.com/ja-jp/articles/10128477-chatgpt-enterprise-and-edu-release-notes">ChatGPT Enterprise と Edu のリリースノート (OpenAI)</a></li>
+	<li><a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries">ChatGPT Supported Countries (OpenAI)</a></li>
+	<li><a href="https://venturebeat.com/technology/openai-launches-dots-always-on-ai-agent-coworkers-and-chatgpt-space-where-they-can-collaborate-with-human-teams">OpenAI launches dots (VentureBeat)</a></li>
+	<li><a href="https://apptime.co.jp/media/chatgpt-dots/">ChatGPT dots (apptime)</a></li>
+	<li><a href="https://www.bnnbloomberg.ca/business/artificial-intelligence/2026/07/09/openai-launches-chatgpt-work/">OpenAI launches ChatGPT Work (BNN Bloomberg)</a></li>
+	<li><a href="https://www.itmedia.co.jp/aiplus/articles/2604/23/news063.html">workspace agents 提供開始 (ITmedia)</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/ChatGPT_Atlas">ChatGPT Atlas (Wikipedia)</a></li>
+	<li><a href="https://claude.com/pricing">Claude の料金 (Anthropic)</a></li>
+	<li><a href="https://support.claude.com/en/articles/11049741-what-is-the-max-plan">What is the Max plan (Anthropic)</a></li>
+	<li><a href="https://www.anthropic.com/supported-countries">Supported countries (Anthropic)</a></li>
+	<li><a href="https://support.claude.com/en/articles/12138966-release-notes">Claude release notes (Anthropic)</a></li>
+	<li><a href="https://claude.com/blog/claude-in-chrome-generally-available">Claude in Chrome generally available (Anthropic)</a></li>
+	<li><a href="https://apptime.co.jp/media/grok-pricing-plans">Grok の料金 (AppTime)</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Grok_(chatbot)">Grok (Wikipedia)</a></li>
+	<li><a href="https://x.ai/news/introducing-grok-bot">Introducing Grok Bot (SpaceXAI)</a></li>
+	<li><a href="https://www.elcamy.com/blog/grok-bot">Grok Bot とは (Elcamy)</a></li>
+	<li><a href="https://www.perplexity.ai/pro">Perplexity Pro (Perplexity)</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Comet_(browser)">Comet (Wikipedia)</a></li>
+	<li><a href="https://ai-revolution.co.jp/media/what-is-perplexity-comet/">Perplexity Comet とは (AI Revolution)</a></li>
+	<li><a href="https://techcrunch.com/2026/05/07/perplexitys-personal-computer-is-now-available-everyone-on-mac/">Perplexity Personal Computer (TechCrunch)</a></li>
+</ul>
+</section>
+
+<section class="ch07" id="ch07">
+<h1>自分で動かすオープンソース</h1>
+<p>自分の PC・VPS で常駐させ、チャットアプリから指示する型。どれも国の制限はなく、日本から使える。本体は無料で、LLM の API 代が別にかかる。Hermes Agent の提供元 Nous Research のモデル利用プラン（Nous Portal）は月額 Plus 20ドル・Super 100ドル・Ultra 200ドルで、年払いはない。スター数は 2026-10-03 時点。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>提供元・公開</th><th>概要</th><th>スター</th><th>LINE</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">OpenClaw</td><td>OpenClaw Foundation・2025-11</td><td>20以上のチャットから指示できる常駐エージェント。スキルで機能を足す。旧称は Warelay・Moltbot など。作者の OpenAI 移籍後は財団が運営。MIT</td><td class="nowrap">391k</td><td class="nowrap"><span class="badge b-ok">対応</span></td></tr>
+		<tr><td class="nowrap">Hermes Agent</td><td>Nous Research・2026-02</td><td>うまくいった手順を自分でスキルにする学習ループと、長期の記憶を持つ。MIT</td><td class="nowrap">250.8k</td><td class="nowrap"><span class="badge b-ok">対応</span></td></tr>
+		<tr><td class="nowrap">nanobot</td><td>香港大学 HKUDS・2026-02</td><td>約4,000行の Python で書いた軽量版。MIT</td><td class="nowrap">48.7k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+		<tr><td class="nowrap">QwenPaw（旧 CoPaw）</td><td>Alibaba Cloud・2026-02</td><td>ローカル LLM とクラウドの両方で使え、記憶とサンドボックスを持つ。画面は日本語に対応。Apache-2.0</td><td class="nowrap">35.4k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+		<tr><td class="nowrap">ZeroClaw</td><td>ZeroClaw Labs</td><td>Rust の単一バイナリで、権限を絞って動くのが既定</td><td class="nowrap">32.9k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+		<tr><td class="nowrap">NanoClaw</td><td>Qwibit AI・2026-02</td><td>会話ごとにコンテナで隔離する小型版。<strong>Claude Agent SDK</strong> を土台にしている</td><td class="nowrap">30.9k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+		<tr><td class="nowrap">PicoClaw</td><td>Sipeed・2026-02</td><td>Go 製で、メモリ 10MB 未満。10ドル程度のボードでも動く</td><td class="nowrap">約30k</td><td class="nowrap"><span class="badge b-ok">対応</span></td></tr>
+		<tr><td class="nowrap">NemoClaw</td><td>NVIDIA・2026-03</td><td>OpenClaw などをサンドボックス内で安全に動かすための構成一式。アルファ版</td><td class="nowrap">22.6k</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">IronClaw</td><td>NEAR AI</td><td>OpenClaw の Rust による作り直し。ツールを Wasm で隔離する</td><td class="nowrap">12.6k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+		<tr><td class="nowrap">Khoj</td><td>Khoj</td><td>「AI セカンドブレイン」。WhatsApp に対応。AGPL-3.0</td><td class="nowrap">37.6k</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Octop</td><td>Tencent Cloud</td><td>複数ユーザー・複数エージェントで使う型。MIT</td><td class="nowrap">6.4k</td><td class="nowrap"><span class="badge b-none">なし</span></td></tr>
+	</tbody>
+</table>
+</div>
+<div class="callout callout-warning">
+<p><strong>主な安全上の問題</strong></p>
+<ul>
+	<li>OpenClaw: ワンクリックで遠隔からコードを実行される脆弱性（CVE-2026-25253、修正済み）、権限昇格（CVE-2026-32922）、スキル配布場所への悪意あるスキル341件以上の混入（ClawHavoc）。サンドボックスは既定でオフ。Microsoft は個人 PC・業務端末で動かさないよう警告した。中国当局は政府機関などでの利用を制限した</li>
+	<li>Hermes Agent: パストラバーサルや認可のすり抜けなど CVE 4件。外部監査で Critical が4件見つかった</li>
+</ul>
+</div>
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://github.com/openclaw/openclaw">openclaw/openclaw (GitHub)</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/OpenClaw">OpenClaw (Wikipedia)</a></li>
+	<li><a href="https://docs.openclaw.ai/channels/line">OpenClaw LINE チャネル (OpenClaw Docs)</a></li>
+	<li><a href="https://ai-revolution.co.jp/media/what-is-openclaw/">OpenClaw とは (AI Revolution)</a></li>
+	<li><a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent (GitHub)</a></li>
+	<li><a href="https://hermes-agent.nousresearch.com/docs/user-guide/messaging/line">Hermes Agent LINE (Nous Research)</a></li>
+	<li><a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-hermes-agent-cves-20260504-csa-styled/">Hermes Agent CVEs (Cloud Security Alliance)</a></li>
+	<li><a href="https://github.com/qwibitai/nanoclaw">qwibitai/nanoclaw (GitHub)</a></li>
+	<li><a href="https://github.com/HKUDS/nanobot">HKUDS/nanobot (GitHub)</a></li>
+	<li><a href="https://github.com/sipeed/picoclaw">sipeed/picoclaw (GitHub)</a></li>
+	<li><a href="https://github.com/zeroclaw-labs/zeroclaw">zeroclaw-labs/zeroclaw (GitHub)</a></li>
+	<li><a href="https://github.com/nearai/ironclaw">nearai/ironclaw (GitHub)</a></li>
+	<li><a href="https://github.com/NVIDIA/NemoClaw">NVIDIA/NemoClaw (GitHub)</a></li>
+	<li><a href="https://github.com/agentscope-ai/CoPaw">agentscope-ai/CoPaw (GitHub)</a></li>
+	<li><a href="https://github.com/TencentCloud/Octop">TencentCloud/Octop (GitHub)</a></li>
+	<li><a href="https://github.com/khoj-ai/khoj">khoj-ai/khoj (GitHub)</a></li>
+	<li><a href="https://composio.dev/content/openclaw-alternatives">OpenClaw alternatives (Composio)</a></li>
+</ul>
+</section>
+
+<section class="ch08" id="ch08">
+<h1>海外のスタートアップ</h1>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Genspark</td><td>70以上のモデルを組み合わせる汎用エージェント。資料作成・メール対応・電話の代行。2026-01 に日本法人を設立</td><td>無料枠あり<br>Plus 24.99ドル・Pro 249.99ドル</td><td>Plus 239.99ドル<br>Pro 2,399.88ドル</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Manus</td><td>仮想マシンで調査・Web 作成などを行う自律エージェント。Meta による買収は中国当局が取り消させ、2026-08 から独立企業として運営</td><td>無料枠あり<br>20ドル・40ドル・200ドル</td><td>204ドル・408ドル・2,004ドル</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Poke</td><td>テキストで頼むアシスタント。メール・カレンダー・リマインド。2026-07 に Cognition が買収</td><td>無料枠あり<br>Pro 19ドル・Ultra 199ドル</td><td>Pro 192ドル<br>Ultra 1,920ドル</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>日本語は未確認</td></tr>
+		<tr><td class="nowrap">Motion</td><td>AI がカレンダーとタスクを自動で配置する</td><td>Pro AI 49ドル<br>Business AI 69ドル</td><td>Pro AI 348ドル<br>Business AI 468ドル</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>画面は英語</td></tr>
+		<tr><td class="nowrap">Reclaim.ai</td><td>集中時間・習慣の時間を自動で確保する。Dropbox 傘下</td><td>無料枠あり<br>Starter 12ドル・Business 18ドル（1席）</td><td>Starter 120ドル<br>Business 180ドル（1席）</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>日本語の画面は情報が食い違う</td></tr>
+		<tr><td class="nowrap">Lindy</td><td>iMessage・SMS で頼む AI 秘書。メール・カレンダー・議事録</td><td>Plus 29.99ドル・Pro 99.99ドル・Max 199.99ドル</td><td>年払いなし</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Superhuman Go</td><td>旧 Grammarly 社のアプリ横断アシスタント。メール・Docs と統合</td><td>無料枠あり<br>Pro 15ドル・Business 40ドル</td><td>Pro 144ドル<br>Business 396ドル</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">alfred_</td><td>メール・カレンダー・Slack をまたぐ依頼をまとめて追跡する</td><td>29.99ドル〜200ドル（4段階）</td><td>300ドル〜2,000ドル</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Saner.ai</td><td>ADHD の人向けの、ノート・タスク・メールをまとめるアシスタント</td><td>無料枠あり<br>Starter 8ドル・Standard 16ドル</td><td>Starter 76.80ドル<br>Standard 153.60ドル</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Opera Neon</td><td>エージェント型ブラウザ。サイト操作の自動化</td><td>無料枠あり<br>Standard 19.90ドル</td><td>年払いなし</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Martin</td><td>音声・SMS で頼むアシスタント。アプリの更新は 2025-01 で止まっている</td><td>Basic 35ドル・Pro 49ドル</td><td>Basic 252ドル<br>Pro 360ドル</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+	</tbody>
+</table>
+</div>
+<p>そのほかのサービス（詳細・日本での利用は未確認）: Catch、Arlo、Pally、Sidekicks、Tomo、Instinct、Town、Fyxer、Vellum。</p>
+
+<h2>終了したもの</h2>
+<ul>
+	<li>Clockwise: カレンダー AI。Salesforce が買収し、2026-03 に終了</li>
+</ul>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://aismiley.co.jp/ai_news/genspark-jp-ai-workspace/">Genspark 日本法人 (AISmiley)</a></li>
+	<li><a href="https://addness.co.jp/media/genspark-plan-price">Genspark の料金 (アドネス)</a></li>
+	<li><a href="https://manus.im/pricing">Manus の料金 (Manus)</a></li>
+	<li><a href="https://poke.com/pricing">Poke pricing</a></li>
+	<li><a href="https://www.usemotion.com/pricing">Motion pricing</a></li>
+	<li><a href="https://reclaim.ai/pricing">Reclaim.ai pricing</a></li>
+	<li><a href="https://superhuman.com/plans">Superhuman plans</a></li>
+	<li><a href="https://www.operaneon.com/subscription">Opera Neon subscription</a></li>
+	<li><a href="https://www.trymartin.com/pricing">Martin pricing</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Manus_(AI_agent)">Manus (Wikipedia)</a></li>
+	<li><a href="https://www.businessinsider.jp/article/2605-how-to-use-manus-ai-agent/">Manus の使い方 (Business Insider Japan)</a></li>
+	<li><a href="https://poke.com/docs">Poke Docs</a></li>
+	<li><a href="https://techcrunch.com/2026/04/08/poke-makes-ai-agents-as-easy-as-sending-a-text/">Poke (TechCrunch)</a></li>
+	<li><a href="https://aipicks.jp/mag/ai-scheduling-tools-2026">AI スケジュール管理ツール (aipicks)</a></li>
+	<li><a href="https://www.lindy.ai/pricing">Lindy pricing</a></li>
+	<li><a href="https://en.wikipedia.org/wiki/Grammarly">Grammarly / Superhuman (Wikipedia)</a></li>
+	<li><a href="https://get-alfred.ai/pricing">alfred_ pricing</a></li>
+	<li><a href="https://www.saner.ai/pricing">Saner.ai pricing</a></li>
+	<li><a href="https://toolchase.com/tool/opera-neon/">Opera Neon (toolchase)</a></li>
+	<li><a href="https://www.ycombinator.com/companies/martin">Martin (Y Combinator)</a></li>
+	<li><a href="https://doodle.com/en/clockwise-is-shutting-down-what-to-do-next-in-2026/">Clockwise is shutting down (Doodle)</a></li>
+	<li><a href="https://www.arlo.sh/compare/best-ai-assistants-you-can-text">Best AI assistants you can text (Arlo)</a></li>
+</ul>
+</section>
+
+<section class="ch09" id="ch09">
+<h1>日本企業</h1>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>提供元・時期</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Agent i</td><td>LINEヤフー・2026-04</td><td>Yahoo! JAPAN の AI アシスタントと LINE AI を統合。分野別のエージェントを持ち、2026-09 に情報を自律的に集めて知らせるタスク機能を追加。予約・購入の代行はまだ</td><td>基本無料<br>使い放題 750円</td><td>年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Buffmee</td><td>KDDI・2026-07</td><td>約150の出版社・専門メディアの記事をもとに、出典つきで答える対話 AI</td><td>無料枠あり<br>プレミアム 980円</td><td>年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Rakuten AI</td><td>楽天・2025-07</td><td>チャット・検索・音声対話。楽天の各サービスと連携する</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Natural AI Phone</td><td>ソフトバンク・2026-04</td><td>AI エージェントを OS に組み込んだ端末。Gmail・LINE・Amazon など9アプリをまたいで代行する</td><td>端末 93,600円（AI の月額は未公表）</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span></td></tr>
+		<tr><td class="nowrap">satto memo</td><td>ソフトバンク・2025-10</td><td>AI で要約・検索できるメモアプリ</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>Mac・iPhone</td></tr>
+		<tr><td class="nowrap">SyncMe</td><td>NTTドコモ・2026-03 発表</td><td>dアカウントの情報から利用者の傾向を推定するキャラクター型のパーソナル AI。一般提供は秋に延期</td><td>未公表</td><td>未公表</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>提供前</td></tr>
+		<tr><td class="nowrap">Stella AI セット割</td><td>ドコモ取扱・2024-12</td><td>複数のモデルを切り替えて使える生成 AI</td><td>1,078円・1,628円・2,728円</td><td>年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Rakuten AI for Desktop</td><td>楽天・日本HP・2026-07</td><td>HP の PC に同梱。端末内とクラウドのモデルを切り替える</td><td>未公表</td><td>未公表</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>個人向けは10月以降</td></tr>
+		<tr><td class="nowrap">FMV AI Plus+</td><td>富士通クライアントコンピューティング・2026-01</td><td>文章・画像・音声の AI 機能をまとめたサブスク</td><td>1,100円（FMVプレミアム会員）・1,980円</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">ポケとも</td><td>シャープ・2025-12</td><td>対話 AI キャラクター。アプリと小型ロボット</td><td>495円・990円・1,980円・3,300円</td><td>年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Cotomo</td><td>Starley・2024-02</td><td>音声で会話する AI</td><td>基本無料（コインは 250円〜）</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Felo</td><td>Felo株式会社・2024</td><td>AI 検索と、自分用エージェントを作る Felo Agent</td><td>無料枠あり<br>2,990円</td><td>29,980円</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+	</tbody>
+</table>
+</div>
+<p>ソフトバンクの Cristal intelligence と NTT の tsuzumi は法人向けで、個人向けアプリは確認できなかった。</p>
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://www.lycorp.co.jp/ja/news/release/020366/">Agent i (LINEヤフー)</a></li>
+	<li><a href="https://ai-revolution.co.jp/media/what-is-lineyahoo-agent-i/">Agent i とは (AI Revolution)</a></li>
+	<li><a href="https://k-tai.watch.impress.co.jp/docs/news/2128643.html">Buffmee (ケータイ Watch)</a></li>
+	<li><a href="https://corp.rakuten.co.jp/news/press/2025/0730_01.html">Rakuten AI (楽天)</a></li>
+	<li><a href="https://k-tai.watch.impress.co.jp/docs/news/2102414.html">Natural AI Phone (ケータイ Watch)</a></li>
+	<li><a href="https://uravation.com/media/satto-softbank-ai-agent-guide-2026/">satto (Uravation)</a></li>
+	<li><a href="https://k-tai.watch.impress.co.jp/docs/news/2131151.html">SyncMe 延期 (ケータイ Watch)</a></li>
+	<li><a href="https://www.docomo.ne.jp/service/syncme/">SyncMe (NTTドコモ)</a></li>
+	<li><a href="https://jp.ext.hp.com/info/newsroom/2026/20260729/">Rakuten AI for Desktop (日本HP)</a></li>
+	<li><a href="https://prtimes.jp/main/html/rd/p/000000096.000041345.html">FMV AI Plus+ (PR TIMES)</a></li>
+	<li><a href="https://corporate.jp.sharp/news/251027-a.html">ポケとも (シャープ)</a></li>
+	<li><a href="https://poketomo.com/">ポケとも 料金 (シャープ)</a></li>
+	<li><a href="https://www.lycorp.co.jp/ja/news/release/019558/">LINE AI 使い放題プラン (LINEヤフー)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/buffmee/id6760288486">Buffmee (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/felo-search-the-world/id6598782546">Felo (App Store)</a></li>
+	<li><a href="https://felo.ai/ja/blog/about-us/">Felo について (Felo)</a></li>
+</ul>
+</section>
+
+<section class="ch10" id="ch10">
+<h1>中国・韓国の企業</h1>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>提供元</th><th>概要</th><th>月額</th><th>年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Galaxy AI・Bixby</td><td>Samsung</td><td>翻訳・文字起こし・<strong>Gemini Live</strong> など。Galaxy S26 は Bixby・<strong>Gemini</strong>・Perplexity の複数エージェントに対応</td><td>無料（端末代のみ）</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span><br>国内モデル</td></tr>
+		<tr><td class="nowrap">Dola（旧 Cici）</td><td>ByteDance 系</td><td>中国の「豆包」の海外版。対話・作文・画像生成</td><td>無料枠あり<br>Plus 1,600円・Pro 7,900円・Max 25,000円</td><td>Plus 16,000円<br>Pro・Max は年払いなし</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Qwen</td><td>Alibaba</td><td>国際版はチャット・画像・翻訳。予約・決済のエージェント機能は中国版で、国外では未確認</td><td>無料枠あり<br>Go 690円・Plus 2,890円・Pro 16,800円</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Kimi</td><td>Moonshot AI</td><td>チャット、ブラウザ操作エージェント「Kimi Claw」。2026-08 に日本語の公式 X を開設</td><td>無料枠あり<br>3,000円〜30,000円（4段階）</td><td>30,000円〜300,000円</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">DeepSeek</td><td>DeepSeek</td><td>チャット型アシスタント。個人情報保護委員会が注意を呼びかけている</td><td>無料</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">MiniMax Agent（現 Mavis）</td><td>MiniMax</td><td>汎用エージェント。画面は英語・中国語</td><td>無料枠あり<br>20ドル・50ドル・120ドル</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">元宝・文小言・AutoGLM</td><td>Tencent・Baidu・Zhipu</td><td>中国向けのアシスタント・スマホ操作エージェント</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Celia（小芸）</td><td>Huawei</td><td>HarmonyOS 7（2026-06 発表）で、複数の手順をこなすエージェントに拡張</td><td>無料（端末代のみ）</td><td>—</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">YOYO Agent・YOYO Next</td><td>Honor</td><td>2026-03 発表。アプリをまたいで操作する。2026-08 にカメラが動く「Robot Phone」を中国で発売</td><td>無料（端末代のみ）</td><td>—</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">小布 Next 計画</td><td>OPPO</td><td>端末上で複数のエージェントが連携する仕組み。2026-07 に中国でベータ。日本の OPPO 端末への搭載は見当たらない</td><td>未公表</td><td>未公表</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">藍心小V Pro</td><td>vivo</td><td>2026-09 の OriginOS 7 で、システム全体を操作できるパーソナル AI に</td><td>無料（端末代のみ）</td><td>—</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Agent N ほか</td><td>NAVER</td><td>2026年中に全サービスへ AI エージェントを展開する方針。まず買い物用エージェント</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">ThinQ Claw</td><td>LG</td><td>2026-09 の IFA で発表した家電向けの自律エージェント。チャットで家電を操作する</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">A.（エイドット）</td><td>SKテレコム</td><td>韓国向けの AI 秘書</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap"><strong>ChatGPT</strong> for Kakao</td><td>カカオ</td><td>韓国のみとされる</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+	</tbody>
+</table>
+</div>
+<p>Manus は「海外のスタートアップ」の章に載せている。</p>
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://www.samsung.com/jp/apps/bixby/">Bixby (Samsung Japan)</a></li>
+	<li><a href="https://news.samsung.com/jp/open-galaxy-s26-launch">Galaxy S26 (Samsung Japan)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/dola-smart-ai-assistant/id6451431247?l=en-US">Dola (App Store)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/id6757738627">Qwen (App Store)</a></li>
+	<li><a href="https://36kr.jp/494498/">千問 (36Kr Japan)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/kimi-kimi-k3-is-live/id6474233312">Kimi (App Store)</a></li>
+	<li><a href="https://ai-revolution.co.jp/media/kimi-japan-launch/">Kimi 日本展開 (AI Revolution)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/deepseek-ai-%E3%82%A2%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%88/id6737597349">DeepSeek (App Store)</a></li>
+	<li><a href="https://k-tai.watch.impress.co.jp/docs/news/1660128.html">DeepSeek への注意喚起 (ケータイ Watch)</a></li>
+	<li><a href="https://aigentlab.tech/articles/minimax-agent-guide-2026/">MiniMax Agent (aigentlab)</a></li>
+	<li><a href="https://www.korit.jp/news_hankyung_skt_aiapp">SKT A. (KORIT)</a></li>
+	<li><a href="https://pandaily.com/hdc2026-harmonyos7-beta-66-million-devices-jun2026">HDC 2026: HarmonyOS 7 (Pandaily)</a></li>
+	<li><a href="https://36kr.jp/500445/">HONOR Robot Phone (36Kr Japan)</a></li>
+	<li><a href="https://technode.com/2026/09/16/vivo-bluecode-phone-coding-agent/">vivo BlueCode・OriginOS 7 (TechNode)</a></li>
+	<li><a href="https://www.techinasia.com/news/naver-to-roll-out-ai-agents-across-all-services-in-2026">Naver to roll out AI agents (Tech in Asia)</a></li>
+	<li><a href="https://news.mynavi.jp/article/20260912-4931173/">LG の AI ホーム (マイナビニュース)</a></li>
+</ul>
+</section>
+
+<section class="ch11" id="ch11">
+<h1>AI端末・ウェアラブル</h1>
+<p>技適は、どの製品も確認できなかった。</p>
+<div class="tablewrap">
+<table>
+	<thead><tr><th>製品</th><th>概要</th><th>本体価格</th><th>サブスク月額</th><th>サブスク年額</th><th>日本</th></tr></thead>
+	<tbody>
+		<tr><td class="nowrap">Ray-Ban Meta Gen 2・Gen 3、Oakley Meta</td><td>カメラ付き AI グラス。見ている物について質問でき、ライブ翻訳は日本語に対応。<strong>Meta AI</strong> の言語を日本語にすれば日本語で操作できるとの報道があるが、日本向け FAQ には「非対応」の記載が残っている</td><td>73,700円〜</td><td>不要</td><td>—</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Even G2 ＋ R1</td><td>カメラなしの表示付きグラス。会話サポート・翻訳</td><td>99,800円</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Rokid の AI グラス</td><td>表示付きと表示なしの2機種。翻訳・AI 検索</td><td>64,990円〜</td><td>未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Plaud NotePin・NotePin S</td><td>身につける AI ボイスレコーダー。文字起こし・要約</td><td>27,500円〜</td><td>無料枠あり（月300分）<br>Pro 3,000円・Unlimited 5,000円</td><td>Pro 16,800円<br>Unlimited 40,000円</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">SwitchBot AIマインドクリップ</td><td>クリップ型の録音・要約・ToDo 抽出</td><td>19,980円</td><td>無料枠あり（月300分）<br>有料プランは未確認</td><td>未確認</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Google Home Speaker</td><td><strong>Gemini for Home</strong> のスピーカー</td><td>16,800円</td><td>Home Premium Standard 1,000円・Advanced 2,000円</td><td>Advanced 20,000円</td><td class="nowrap"><span class="badge b-ok">利用可</span></td></tr>
+		<tr><td class="nowrap">Rabbit r1</td><td>手のひらサイズの AI 端末。日本語に対応</td><td>199ドル</td><td>不要</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span><br>海外から購入</td></tr>
+		<tr><td class="nowrap">Echo 新機種</td><td>Alexa+ 向けの端末。日本では Alexa+ が使えない</td><td>14,980円〜</td><td>—</td><td>—</td><td class="nowrap"><span class="badge b-warn">条件付き</span></td></tr>
+		<tr><td class="nowrap">Meta Ray-Ban Display</td><td>表示付きグラスと筋電リストバンド</td><td>799ドル</td><td>—</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Ray-Ban Meta Audio</td><td>カメラなしの音声専用グラス。日本は2027年予定</td><td>349ドル</td><td>—</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Snap Specs</td><td>AR グラス。米国・英国・フランスのみ</td><td>2,195ドル</td><td>—</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Bee</td><td>常時録音の端末。Amazon 傘下。米国のみ出荷</td><td>49.99ドル</td><td>—</td><td>—</td><td class="nowrap"><span class="badge b-ng">不可</span></td></tr>
+		<tr><td class="nowrap">Friend・Omi・Sandbar Stream・Pebble Index 01</td><td>AI ペンダント・音声メモ用のリング</td><td>75〜249ドル</td><td>Friend 9.99ドル・Sandbar Pro 10ドル</td><td>未確認</td><td class="nowrap"><span class="badge b-none">未確認</span></td></tr>
+		<tr><td class="nowrap">Android XR グラス・XREAL Aura</td><td><strong>Gemini</strong> を載せたグラス。2026年秋〜11月の予定</td><td>未発表</td><td>未発表</td><td>未発表</td><td class="nowrap"><span class="badge b-none">未発売</span></td></tr>
+		<tr><td class="nowrap">OpenAI の端末・Apple の AI 端末・<strong>Meta Muse Charm</strong></td><td>画面のない端末など。いずれも未発表か発売前</td><td>未発表</td><td>未発表</td><td>未発表</td><td class="nowrap"><span class="badge b-none">未発売</span></td></tr>
+	</tbody>
+</table>
+</div>
+
+<h2>終了したもの</h2>
+<ul>
+	<li>Humane AI Pin: 2025-02 にサービス終了</li>
+	<li>Limitless Pendant: Meta が買収し、販売を終了</li>
+</ul>
+
+<h2>出典</h2>
+<ul class="src">
+	<li><a href="https://about.fb.com/ja/news/2026/05/ai-glass-launch/">Ray-Ban Meta 日本発売 (Meta)</a></li>
+	<li><a href="https://about.fb.com/ja/news/2026/09/ai-glasses-lineup-added/">AI グラスのラインアップ追加 (Meta)</a></li>
+	<li><a href="https://www.itmedia.co.jp/pcuser/articles/2605/29/news124.html">Ray-Ban Meta レビュー (ITmedia)</a></li>
+	<li><a href="https://gori.me/facebook/facebook-news/167589">Ray-Ban Meta のライブ翻訳が日本語に対応 (ゴリミー)</a></li>
+	<li><a href="https://keieiax.jp/blog/rayban-gen3-japanese/">Ray-Ban Meta Gen 3 は日本語で音声操作できる (keieiax)</a></li>
+	<li><a href="https://www.engadget.com/2267230/everything-announced-at-meta-connect-2026/">Meta Connect 2026 (Engadget)</a></li>
+	<li><a href="https://www.moguravr.com/even-g2-japan-sale/">Even G2 日本販売 (Mogura VR)</a></li>
+	<li><a href="https://www.watch.impress.co.jp/docs/news/2137746.html">Rokid (Impress Watch)</a></li>
+	<li><a href="https://jp.plaud.ai/products/notepin">Plaud NotePin (Plaud)</a></li>
+	<li><a href="https://apps.apple.com/jp/app/plaud-ai-note-taker/id6450364080">Plaud の料金 (App Store)</a></li>
+	<li><a href="https://k-tai.watch.impress.co.jp/docs/news/2134184.html">SwitchBot AIマインドクリップ (ケータイ Watch)</a></li>
+	<li><a href="https://gigazine.net/gsc_news/en/20260618-google-home-speaker/">Google Home Speaker (GIGAZINE)</a></li>
+	<li><a href="https://www.rabbit.tech/support/article/which-countries-does-rabbit-r1-ship-to">Rabbit r1 出荷国 (Rabbit)</a></li>
+	<li><a href="https://prtimes.jp/main/html/rd/p/000002062.000004612.html">Echo 新機種 (PR TIMES)</a></li>
+	<li><a href="https://techcrunch.com/2026/06/16/snap-finally-debuts-its-long-awaited-ar-glasses-specs-and-oof-they-arent-cheap/">Snap Specs (TechCrunch)</a></li>
+	<li><a href="https://www.bee.computer/">Bee</a></li>
+	<li><a href="https://www.techcrunch.com/2025/12/05/meta-acquires-ai-device-startup-limitless/">Meta acquires Limitless (TechCrunch)</a></li>
+	<li><a href="https://9to5google.com/2026/10/01/samsung-android-xr-glasses-release-date-report/">Android XR グラス (9to5Google)</a></li>
+	<li><a href="https://www.macrumors.com/2026/02/10/openais-jony-ive-designed-device-delayed-to-2027/">OpenAI device delayed (MacRumors)</a></li>
+</ul>
+</section>
+</div>
+
+<footer>
+<a class="home" href="../" title="ホーム"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M2 8 L8 2.5 L14 8"/><path d="M4 7 V13.5 H12 V7"/></svg></a>
+</footer>
+</body>
+</html>
